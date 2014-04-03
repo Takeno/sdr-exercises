@@ -65,7 +65,7 @@ public class SignalProcessor {
 	
 	
 	public static Signal lowPassFilter(double band) {
-		int numCampioni =  ((int)(1.0 / (2.0*band)))*2 +1;
+		int numCampioni =  ((int)(5.0 / (2.0*band)))*2 +1;
 		
 		Complex[] values = new Complex[numCampioni];
 		int simmetria = numCampioni / 2;
@@ -76,6 +76,19 @@ public class SignalProcessor {
 		}
 		Signal lpf = new Signal(values);
 		return lpf;
+	}
+	
+	public Signal bandFilter (double band, double portante){
+		int numCampioni = ((int)(5.0 / (2.0*band)))*2 +1;
+		
+		Complex[] values = new Complex[numCampioni];
+		int simmetria = numCampioni / 2;
+		int lowerLimit = (int) (portante) - simmetria;
+		int upperLimit = (int) (portante) + simmetria;
+		
+		for(int n = lowerLimit; n <= upperLimit; n++)
+		
+		return bf;
 	}
 	
 	/**
