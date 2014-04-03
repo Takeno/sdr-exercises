@@ -48,7 +48,7 @@ public class Complex {
 		return result;
 	}
 	
-	public Complex somma(Double b) {
+	public Complex somma(double b) {
 		return this.somma(new Complex(b));
 	}
 	
@@ -60,7 +60,7 @@ public class Complex {
 		return result;
 	}
 	
-	public Complex differenza(Double b) {
+	public Complex differenza(double b) {
 		return this.differenza(new Complex(b));
 	}
 	
@@ -73,14 +73,10 @@ public class Complex {
 		return result;
 	}
 	
-	public Complex prodotto(Double b) {
-		return this.prodotto(new Complex(b));
-	}
-	
-	public Complex prodottoScalare(double s){
+	public Complex prodotto(double b){
 		Complex result = new Complex(
-			this.reale * s,
-			this.immaginaria * s
+			this.reale * b,
+			this.immaginaria * b
 		);
 		return result;
 	}
@@ -95,8 +91,8 @@ public class Complex {
 		return this.prodotto(b.reciproco());
 	}
 	
-	public Complex rapporto(Double b) {
-		return this.prodottoScalare(1.0/b);
+	public Complex rapporto(double b) {
+		return this.prodotto(1.0/b);
 	}
 	
 	// e^{this}
