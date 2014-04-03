@@ -65,7 +65,9 @@ public class SignalProcessorTest {
 		double band = 0.25;
 		assertEquals(1, SignalProcessor.sinc(0, 20), 0);
 		assertEquals(0, SignalProcessor.sinc(1.0/(2.0*band), band), 0);
-		System.out.println(SignalProcessor.sinc(0.42, band));
+
+		// Me lo ha detto Wolfram
+		// http://www.wolframalpha.com/input/?i=sinc%280.42+*+0.25+*+pi%29
 		assertEquals(0.9819, SignalProcessor.sinc(0.42, band), 0.0001);
 	}
 	

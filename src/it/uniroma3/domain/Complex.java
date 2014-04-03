@@ -22,21 +22,6 @@ public class Complex {
 		this.immaginaria = immaginaria;
 	}
 	
-	public String toString(){
-		String complex = "";
-
-		if(this.immaginaria == 0)
-			complex += this.reale;
-		else if(this.immaginaria < 0 && this.reale!=0) 
-			complex = this.reale +" "+ this.immaginaria+" j";
-		else if(this.reale==0)
-			complex = this.immaginaria+" j";
-		else
-			complex = this.reale+" + "+ this.immaginaria+" j";
-
-		return complex;
-	}
-	
 	public double abs(){
 		return Math.hypot(this.reale, this.immaginaria);
 	}
@@ -78,7 +63,6 @@ public class Complex {
 		return result;
 	}
 	
-	
 	public Complex reciproco(){
 		double scalare = Math.pow(this.reale,2) + Math.pow(this.immaginaria,2);
 		Complex result = new Complex(this.reale/scalare , this.immaginaria/scalare);
@@ -89,6 +73,41 @@ public class Complex {
 		return this.prodotto(b.reciproco());
 	}
 	
+	// e^{this}
+	public Complex exp() {
+		return new Complex(
+			Math.exp(this.reale) * Math.cos(this.immaginaria),
+			Math.exp(this.reale) * Math.sin(this.immaginaria)
+		);
+	}
+	
+	public Complex sin() {
+	    return new Complex(
+    		Math.cosh(this.immaginaria) * Math.sin(this.reale),
+    		Math.sinh(this.immaginaria) * Math.cos(this.reale)
+		);
+	}
+
+    public Complex cos() {
+        return new Complex(
+    		Math.cosh(this.immaginaria) * Math.cos(this.reale),
+    		-1 * Math.sinh(this.immaginaria) * Math.sin(this.reale)
+		);
+    }
+    
+    public Complex sinh() {
+        return new Complex(
+    		Math.sinh(this.reale) * Math.cos(this.immaginaria),
+    		Math.cosh(this.reale) * Math.sin(this.immaginaria)
+		);
+    }
+    
+    public Complex cosh() {
+        return new Complex(
+    		Math.cosh(this.reale) * Math.cos(this.immaginaria),
+    		Math.sinh(this.reale)*Math.sin(this.immaginaria)
+		);
+    }
 	
 	@Override
 	public int hashCode() {
@@ -97,9 +116,25 @@ public class Complex {
 
 	@Override
 	public boolean equals(Object o) {
-
 		Complex c = (Complex) o;
 
-		return this.reale == c.getReale() && this.immaginaria == c.getImmaginaria();
-	}	 
+		return this.reale == c.getReale() &&
+			   this.immaginaria == c.getImmaginaria();
+	}
+	
+	@Override
+	public String toString(){
+		String complex;
+
+		if(this.immaginaria == 0)
+			complex = "" + this.reale;
+		else if(this.immaginaria < 0 && this.reale!=0) 
+			complex = this.reale +" "+ this.immaginaria+" j";
+		else if(this.reale == 0)
+			complex = this.immaginaria+" j";
+		else
+			complex = this.reale+" + "+ this.immaginaria+" j";
+
+		return complex;
+	}
 }
