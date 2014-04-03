@@ -60,5 +60,12 @@ public class ComplexTest {
 		assertEquals(50, this.complesso.somma(this.complesso).getReale(), 0);
 		assertEquals(6.88, this.complesso.somma(this.complesso).getImmaginaria(), 0);
 	}
+	
+	@Test
+	public void expTest() {
+		assertEquals(1, this.zero.exp().abs(), 0);
+		assertEquals(1, this.zero.exp().getReale(), 0);
+		assertEquals(0, this.zero.exp().getImmaginaria(), 0);
+	}
 
 }

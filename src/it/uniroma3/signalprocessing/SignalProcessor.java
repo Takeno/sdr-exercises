@@ -44,6 +44,7 @@ public class SignalProcessor {
 	public static double sinc(double n, double band){
 		if(n == 0.0)
 			return 1;
+		
 		double range = 1.0/(2.0*band);
 		if (n%range == 0.0)
 			return 0;
@@ -54,41 +55,34 @@ public class SignalProcessor {
 	
 	/**
 	 * Crea un nuovo segnale rappresentante il filtro passa-basso
-	 * NOTA BENE: il numero di campioni che deve essere passato deve essere dispari
-	 * Ottimizzare il metodo come richiesto nell'homework
 	 * 
 	 * @param band
 	 * @param numCampioni
 	 * @return Segnale discreto
 	 */
-	
-	
-	
-	public static Signal lowPassFilter(double band) {
-		int numCampioni =  ((int)(5.0 / (2.0*band)))*2 +1;
-		
+	public static Signal lowPassFilter(double band, int numCampioni) {
 		Complex[] values = new Complex[numCampioni];
-		int simmetria = numCampioni / 2;
+		int simmetria = (numCampioni) / 2;
 		
-		for(int n = -simmetria; n <= simmetria; n++){
-			double realval = 2 * band * sinc(n, band);
-			values[n + simmetria] = new Complex(realval, 0);
+		for(int n = - simmetria; n <= simmetria; n++){
+			double realval = 2 * band * sinc(n, 2 * band);
+			values[n + simmetria] = new Complex(realval);
 		}
-		Signal lpf = new Signal(values);
-		return lpf;
+		
+		return new Signal(values);
 	}
-	
-	public Signal bandFilter (double band, double portante){
-		int numCampioni = ((int)(5.0 / (2.0*band)))*2 +1;
+
+	/**
+	 * Crea un nuovo segnale rappresentante il filtro passa-basso
+	 * 
+	 * @param band
+	 * @return Segnale discreto
+	 */
+	public static Signal lowPassFilter(double band) {
+		double ampiezzaConsiderata = 5D / (2D * band);
+		int numCampioni = ((int)ampiezzaConsiderata)*2 +1;
 		
-		Complex[] values = new Complex[numCampioni];
-		int simmetria = numCampioni / 2;
-		int lowerLimit = (int) (portante) - simmetria;
-		int upperLimit = (int) (portante) + simmetria;
-		
-		for(int n = lowerLimit; n <= upperLimit; n++)
-		
-		return bf;
+		return SignalProcessor.lowPassFilter(band, numCampioni);
 	}
 	
 	/**
