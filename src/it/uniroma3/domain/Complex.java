@@ -4,11 +4,21 @@ public class Complex {
 	private double reale;
 	private double immaginaria;
 	
+	public Complex() {
+		this.reale = 0D;
+		this.immaginaria = 0D;
+	}
+	
+	public Complex(double reale) {
+		this.reale = reale;
+		this.immaginaria = 0D;
+	}
+	
 	public Complex(double reale, double immaginaria) {
-		super();
 		this.reale = reale;
 		this.immaginaria = immaginaria;
 	}
+	
 	public double getReale() {
 		return reale;
 	}
@@ -38,6 +48,10 @@ public class Complex {
 		return result;
 	}
 	
+	public Complex somma(Double b) {
+		return this.somma(new Complex(b));
+	}
+	
 	public Complex differenza(Complex b) {
 		Complex result = new Complex(
 			this.reale -  b.getReale(), 
@@ -46,13 +60,21 @@ public class Complex {
 		return result;
 	}
 	
+	public Complex differenza(Double b) {
+		return this.differenza(new Complex(b));
+	}
 	
-	public Complex prodotto(Complex b){
+	
+	public Complex prodotto(Complex b) {
 		Complex result = new Complex(
 				this.reale * b.getReale() - this.immaginaria * b.getImmaginaria(),
 				this.reale * b.getImmaginaria() + b.getReale() * this.immaginaria
 		);
 		return result;
+	}
+	
+	public Complex prodotto(Double b) {
+		return this.prodotto(new Complex(b));
 	}
 	
 	public Complex prodottoScalare(double s){
@@ -71,6 +93,10 @@ public class Complex {
 	
 	public Complex rapporto(Complex b){
 		return this.prodotto(b.reciproco());
+	}
+	
+	public Complex rapporto(Double b) {
+		return this.prodottoScalare(1.0/b);
 	}
 	
 	// e^{this}
