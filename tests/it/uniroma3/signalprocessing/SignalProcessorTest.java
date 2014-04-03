@@ -67,15 +67,32 @@ public class SignalProcessorTest {
 		assertEquals(0, SignalProcessor.sinc(1.0/(2.0*band), band), 0);
 
 		// Me lo ha detto Wolfram
-		// http://www.wolframalpha.com/input/?i=sinc%280.42+*+0.25+*+pi%29
-		assertEquals(0.9819, SignalProcessor.sinc(0.42, band), 0.0001);
+		// http://www.wolframalpha.com/input/?i=sinc%280.42+*+0.5+*+pi%29
+		assertEquals(0.9290, SignalProcessor.sinc(0.42, band), 0.0001);
 	}
 	
 	@Test
-	public void costruzioneFiltroPassaBasso() {
-		Signal filter = SignalProcessor.lowPassFilter(0.25);
+	public void lowPassFilter() {
+		double band = 0.25;
+		Signal filter = SignalProcessor.lowPassFilter(band);
+		int simmetria = filter.getValues().length / 2;
+		
+		assertEquals(0, filter.getValues()[simmetria-2].abs(), 0);
+		assertEquals(0.3183, filter.getValues()[simmetria-1].abs(), 0.0001);
+		assertEquals(0.5, filter.getValues()[simmetria].abs(), 0);
+		assertEquals(0.3183, filter.getValues()[simmetria+1].abs(), 0.0001);
+		assertEquals(0, filter.getValues()[simmetria+2].abs(), 0);
+
+	}
+	
+	@Test
+	public void bandPassFilter() {
+		double band = 0.25,
+			   portante = 3;
+		
+		Signal filter = SignalProcessor.bandpassFilter(band, portante);
 		for(Complex c : filter.getValues())
 			System.out.println(c);
-//		assertEquals()
+		
 	}
 }

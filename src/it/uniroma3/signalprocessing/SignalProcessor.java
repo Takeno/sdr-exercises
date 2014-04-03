@@ -42,14 +42,14 @@ public class SignalProcessor {
 	}
 	
 	public static double sinc(double n, double band){
-		if(n == 0.0)
+		if(n == 0D)
 			return 1;
 		
-		double range = 1.0/(2.0*band);
-		if (n%range == 0.0)
-			return 0;
+		double range = 1D/(2D * band);
+		if (n % range == 0D)
+			return 0D;
 		
-		double sincArgument = Math.PI * band * n;
+		double sincArgument = Math.PI * 2 * band * n;
 		return Math.sin(sincArgument) / sincArgument;
 	}
 	
@@ -65,7 +65,7 @@ public class SignalProcessor {
 		int simmetria = (numCampioni) / 2;
 		
 		for(int n = - simmetria; n <= simmetria; n++){
-			double realval = 2 * band * sinc(n, 2 * band);
+			double realval = 2 * band * SignalProcessor.sinc(n, band);
 			values[n + simmetria] = new Complex(realval);
 		}
 		
@@ -85,6 +85,33 @@ public class SignalProcessor {
 		return SignalProcessor.lowPassFilter(band, numCampioni);
 	}
 	
+	//	public Signal bandFilter (double band, double portante){
+	//	int numCampioni = ((int)(5.0 / (2.0*band)))*2 +1;
+	//	
+	//	Complex[] values = new Complex[numCampioni];
+	//	int simmetria = numCampioni / 2;
+	//	int lowerLimit = (int) (portante) - simmetria;
+	//	int upperLimit = (int) (portante) + simmetria;
+	//	
+	//	for(int n = lowerLimit; n <= upperLimit; n++)
+	//	
+	//	return bf;
+	//}
+	
+	public static Signal bandpassFilter (double band, double portante) {
+		Complex[] filterValues = SignalProcessor.lowPassFilter(band).getValues();
+		Complex expTranslazione;
+		
+		int simmetria = filterValues.length / 2;
+		
+		for(int n = -simmetria; n < simmetria; n++) {
+			expTranslazione = (new Complex(0, 2 * portante * n)).exp();
+			filterValues[n + simmetria] = filterValues[n + simmetria].prodotto(expTranslazione);
+		}
+		
+		return new Signal(filterValues);
+	}
+
 	/**
 	 * Operazione di convoluzione fra segnali:
 	 * implementa un'operazione di convoluzione discreta fra due segnali passati come parametro.
