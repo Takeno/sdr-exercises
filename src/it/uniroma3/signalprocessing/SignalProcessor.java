@@ -41,6 +41,14 @@ public class SignalProcessor {
 		return result;
 	}
 	
+	/**
+	 * Restituisce l'n-esimo campione di una sinc di banda band
+	 * 
+	 * @param n
+	 * @param band
+	 * @return valore campione
+	 */
+	
 	public static double sinc(double n, double band){
 		if(n == 0D)
 			return 1;
@@ -49,12 +57,13 @@ public class SignalProcessor {
 		if (n % range == 0D)
 			return 0D;
 		
-		double sincArgument = Math.PI * 2 * band * n;
+		double sincArgument = Math.PI * 2D * band * n;
 		return Math.sin(sincArgument) / sincArgument;
 	}
 	
 	/**
 	 * Crea un nuovo segnale rappresentante il filtro passa-basso
+	 * con numero di campioni dati in input
 	 * 
 	 * @param band
 	 * @param numCampioni
@@ -64,9 +73,10 @@ public class SignalProcessor {
 		Complex[] values = new Complex[numCampioni];
 		int simmetria = (numCampioni) / 2;
 		
-		for(int n = - simmetria; n <= simmetria; n++){
+		for(int n = 0; n <= simmetria; n++){
 			double realval = 2 * band * SignalProcessor.sinc(n, band);
 			values[n + simmetria] = new Complex(realval);
+			values[-n + simmetria] = new Complex(realval);
 		}
 		
 		return new Signal(values);
@@ -74,6 +84,7 @@ public class SignalProcessor {
 
 	/**
 	 * Crea un nuovo segnale rappresentante il filtro passa-basso
+	 * con numero di campioni calcolati
 	 * 
 	 * @param band
 	 * @return Segnale discreto
@@ -85,31 +96,28 @@ public class SignalProcessor {
 		return SignalProcessor.lowPassFilter(band, numCampioni);
 	}
 	
-	//	public Signal bandFilter (double band, double portante){
-	//	int numCampioni = ((int)(5.0 / (2.0*band)))*2 +1;
-	//	
-	//	Complex[] values = new Complex[numCampioni];
-	//	int simmetria = numCampioni / 2;
-	//	int lowerLimit = (int) (portante) - simmetria;
-	//	int upperLimit = (int) (portante) + simmetria;
-	//	
-	//	for(int n = lowerLimit; n <= upperLimit; n++)
-	//	
-	//	return bf;
-	//}
 	
-	public static Signal bandpassFilter (double band, double portante) {
-		Complex[] filterValues = SignalProcessor.lowPassFilter(band).getValues();
-		Complex expTranslazione;
+	public static Signal bandPassFilter (double band, double portante) {
+		double ampiezzaConsiderata = 5D / (2D * band);
+		int numCampioni = ((int)ampiezzaConsiderata)*2 +1;
 		
-		int simmetria = filterValues.length / 2;
+		Complex[] values = new Complex[numCampioni];
+		int simmetria = numCampioni / 2;
+		double realval;
 		
-		for(int n = -simmetria; n < simmetria; n++) {
-			expTranslazione = (new Complex(0, 2 * portante * n)).exp();
-			filterValues[n + simmetria] = filterValues[n + simmetria].prodotto(expTranslazione);
+		for(int n = 0; n <= simmetria; n++){
+			realval = 2 * band * SignalProcessor.sinc(n, band);
+			realval *= 2 * Math.cos(2 * Math.PI * portante * n);
+			values[n + simmetria] = new Complex(realval);
+			values[-n + simmetria] = new Complex(realval);
 		}
 		
-		return new Signal(filterValues);
+		// alternativamente si può usare il metodo lowPassFilter
+		// e moltiplicare tutti i suoi valori per il coseno
+		// non ci sarebbe la ripetizione di codice ma sarebbe più lento
+		// in quanto dovrebbe ciclare due volte lo stesso array
+		
+		return new Signal(values);
 	}
 
 	/**

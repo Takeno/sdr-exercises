@@ -90,9 +90,16 @@ public class SignalProcessorTest {
 		double band = 0.25,
 			   portante = 3;
 		
-		Signal filter = SignalProcessor.bandpassFilter(band, portante);
-		for(Complex c : filter.getValues())
-			System.out.println(c);
+		Signal filter = SignalProcessor.bandPassFilter(band, portante);
+		int simmetria = filter.getValues().length / 2;
+		
+		// 2 * B * sinc(2*pi*B*n) * 2 * cos(2 * pi * f0 * n)
+
+		assertEquals(0, filter.getValues()[simmetria-2].getReale(), 0);
+		assertEquals(0.6366, filter.getValues()[simmetria-1].getReale(), 0.0001);
+		assertEquals(4*band, filter.getValues()[simmetria].getReale(), 0);
+		assertEquals(0.6366, filter.getValues()[simmetria+1].getReale(), 0.0001);
+		assertEquals(0, filter.getValues()[simmetria+2].getReale(), 0);
 		
 	}
 }
