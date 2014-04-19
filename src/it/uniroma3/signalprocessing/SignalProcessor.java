@@ -138,6 +138,16 @@ public class SignalProcessor {
 	}
 
 
+	/**
+	 * Operazione di espansione di un segnale
+	 * dato un segnale e un fattore di espansione viene creato un nuovo segnale
+	 * espanso con valori nulli.
+	 *
+	 * @param Signal segnaleIn
+	 * @param int fattore
+	 * @return Signal espanso
+	 */
+
 	public static Signal espansione(Signal segnaleIn, int fattore) {
 
 		// TODO: verificare side effect
