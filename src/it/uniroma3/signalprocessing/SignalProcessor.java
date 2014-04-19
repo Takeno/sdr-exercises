@@ -136,4 +136,10 @@ public class SignalProcessor {
 		
 		return signal;
 	}
+
+	public static Signal decimatore(Signal segnaleIn, int fattore) {
+
+
+		return null;
+	}
 }
