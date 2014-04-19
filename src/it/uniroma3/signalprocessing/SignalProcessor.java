@@ -139,7 +139,26 @@ public class SignalProcessor {
 
 	public static Signal decimatore(Signal segnaleIn, int fattore) {
 
+		// TODO: controllare side effect
+		if(fattore == 1)
+			return segnaleIn;
 
-		return null;
+		// valori attuali
+		Complex[] values = segnaleIn.getValues();
+		// array nuovi valori
+		Complex[] newValues = new Complex[ values.length / fattore ];
+		// indice per iterare sui nuovi valori
+		int j = 0;
+
+
+		/*
+			Non ho bisogno di iterare su tutti i valori,
+			devo prendere solo quelli tali che (i % fattore == 0).
+			Ciò significa, partendo da i = 0, i+= fattore.
+		 */
+		for(int i = 0; i < values.length; i += fattore)
+			newValues[j++] = values[i]; 
+
+		return new Signal(newValues);
 	}
 }
