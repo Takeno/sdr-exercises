@@ -137,6 +137,17 @@ public class SignalProcessor {
 		return signal;
 	}
 
+
+	/**
+	 * Operazione di decimazione di un segnale
+	 * dato un segnale e un fattore di decimazione viene creato un nuovo segnale
+	 * decimato.
+	 *
+	 * @param Signal segnaleIn
+	 * @param int fattore
+	 * @return Signal decimato
+	 */
+
 	public static Signal decimatore(Signal segnaleIn, int fattore) {
 
 		// TODO: controllare side effect
