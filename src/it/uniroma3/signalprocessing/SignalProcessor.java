@@ -91,9 +91,28 @@ public class SignalProcessor {
 	 */
 	public static Signal lowPassFilter(double band) {
 		double ampiezzaConsiderata = 5D / (2D * band);
-		int numCampioni = ((int)ampiezzaConsiderata)*2 +1;
+		int numCampioni = ((int)ampiezzaConsiderata)*2 + 1;
 		
 		return SignalProcessor.lowPassFilter(band, numCampioni);
+	}
+	
+	/**
+	 * Crea un nuovo segnale rappresentante il filtro passa-basso dipendente da F1
+	 * @param band
+	 * @param F1
+	 * @return Segnale discreto
+	 */
+	
+	public static Signal lowPassFilterInterpolato(double band, int F1){
+		double ampiezzaConsiderata = 5D / (2D * band);
+		int numCampioni = ((int)ampiezzaConsiderata)*2 + 1;
+		Signal lpf = SignalProcessor.lowPassFilter(band, numCampioni);
+		
+		for(Complex num: lpf.getValues())
+			num.setReale(num.getReale()*F1);
+		
+		return lpf;
+		
 	}
 	
 	
@@ -135,5 +154,28 @@ public class SignalProcessor {
 		Signal signal = new Signal(values);
 		
 		return signal;
+	}
+	
+	/**
+	 * Filtro interpolatore eseguito su una sequenza espansa, in base al parametro F1
+	 * @param segnaleIn
+	 * @param F1
+	 * @return segnale interpolato
+	 */
+	public static Signal interpolazione(Signal segnaleIn, int F1){
+		double band = 1D/ (2D * F1);
+		Signal lpf = lowPassFilter(band, F1), si;
+		int n = (lpf.getLength() -1)/2, j = 0;
+		Complex[] val = new Complex[segnaleIn.getLength()];
+		
+		si = SignalProcessor.convoluzione(segnaleIn, lpf);
+		
+		for(int i = 0; i < si.getLength() - n; i++){
+			val[j] = si.getValues()[i];
+			j++;
+		}
+		
+		
+		return new Signal(val);
 	}
 }

@@ -102,4 +102,9 @@ public class SignalProcessorTest {
 		assertEquals(0, filter.getValues()[simmetria+2].getReale(), 0);
 		
 	}
+	
+	@Test
+	public void filtroInterpolatore(){
+		
+	}
 }
