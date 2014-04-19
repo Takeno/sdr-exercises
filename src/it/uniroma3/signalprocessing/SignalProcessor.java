@@ -95,7 +95,7 @@ public class SignalProcessor {
 		
 		return SignalProcessor.lowPassFilter(band, numCampioni);
 	}
-	
+		
 	
 	public static Signal bandPassFilter (double band, double portante) {
 		double ampiezzaConsiderata = 5D / (2D * band);
@@ -135,5 +135,30 @@ public class SignalProcessor {
 		Signal signal = new Signal(values);
 		
 		return signal;
+	}
+
+
+	public static Signal espansione(Signal segnaleIn, int fattore) {
+
+		// TODO: verificare side effect
+		// sto tornando lo stesso oggetto e non un oggetto uguale ma diverso
+		// mi va bene?
+		if(fattore == 1)
+			return segnaleIn;
+
+		// array valori attuali
+		Complex[] values = segnaleIn.getValues();
+		// array per i nuovi valori
+		Complex[] newValues = new Complex[ values.length * fattore ];
+		// indice di iterazione su values
+		int j = 0;
+
+		for(int i = 0; i < newValues.length; i++)
+			if(i % fattore == 0)
+				newValues[i] = values[j++];
+			else
+				newValues[i] = new Complex();
+
+		return new Signal(newValues);
 	}
 }
