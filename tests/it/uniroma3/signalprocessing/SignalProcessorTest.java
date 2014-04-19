@@ -102,4 +102,12 @@ public class SignalProcessorTest {
 		assertEquals(0, filter.getValues()[simmetria+2].getReale(), 0);
 		
 	}
+	
+	@Test
+	public void getParameters(){
+		int tArray[] = {18,24};
+		int fArray[] = SignalProcessor.getParameters(tArray[0], tArray[1]);
+		assertEquals(3, fArray[0]);
+		assertEquals(4, fArray[1]);
+	}
 }

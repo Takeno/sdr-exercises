@@ -1,6 +1,7 @@
 package it.uniroma3.signalprocessing;
 
 import it.uniroma3.domain.*;
+import it.uniroma3.utility.Utils;
 
 public class SignalProcessor {
 	public static double[] convoluzione(double[] v1, double[] v2) {
@@ -135,5 +136,17 @@ public class SignalProcessor {
 		Signal signal = new Signal(values);
 		
 		return signal;
+	}
+	
+	/**
+	 * dati T1 e T2 vengono calcolati i valori dei parametri F1 ed F2
+	 * @param T1
+	 * @param T2
+	 * @return array contenente F1 ed F2
+	 */
+	public static int[] getParameters(int t1, int t2){
+		int gcd = Utils.gcd(t1, t2);
+		int[] fArray = {t1/gcd, t2/gcd};
+		return fArray;
 	}
 }
