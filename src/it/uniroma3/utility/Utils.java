@@ -3,34 +3,49 @@ package it.uniroma3.utility;
 public abstract class Utils {
 
 	/**
-	 * metodo per il calcolo del massimo comun divisore di due numeri interi
+	 * Metodo per il calcolo del massimo comun divisore di due numeri interi
+	 * utilizzando l'algoritmo binario che risulta essere il 60% più veloce
+	 * 
+	 * Fonti:
+	 * http://cs.stackexchange.com/questions/1447/what-is-most-efficient-for-gcd
+	 * http://en.wikipedia.org/wiki/Binary_GCD_algorithm
 	 * 
 	 * @param int x1
 	 * @param int x2
-	 * @return int massimo comun divisore
+	 * @return int gcd
 	 */
-	public static final int gcd(int x1, int x2) {
-		if (x1 < 1 || x2 < 1) {
+	public static int gcd(int x1, int x2) {
+		if (x1 < 0 || x2 < 0)
 			throw new IllegalArgumentException(
-					"I parametri non possono essere "
-							+ "essere negativi o uguali a zero");
-		}
-		int a, b, k, z;
+					"I parametri non possono essere essere negativi");
 
-		if (x1 > x2) {
-			a = x1;
-			b = x2;
-		} else {
-			a = x2;
-			b = x1;
+		int shift;
+
+		/* GCD(0,v) == v; GCD(u,0) == u, GCD(0,0) == 0 */
+		if (x1 == 0)
+			return x2;
+		if (x2 == 0)
+			return x1;
+
+		for (shift = 0; ((x1 | x2) & 1) == 0; ++shift) {
+			x1 >>= 1;
+			x2 >>= 1;
 		}
 
-		k = b;
-		while (k != 0) {
-			z = a % k;
-			a = k;
-			k = z;
-		}
-		return a;
+		while ((x1 & 1) == 0)
+			x1 >>= 1;
+
+		do {
+			while ((x2 & 1) == 0)
+				x2 >>= 1;
+			if (x1 > x2) {
+				int t = x2;
+				x2 = x1;
+				x1 = t;
+			}
+			x2 = x2 - x1;
+		} while (x2 != 0);
+
+		return x1 << shift;
 	}
 }
