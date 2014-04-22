@@ -13,8 +13,10 @@ public class SignalProcessorTest {
 	
 	private Complex[] vettoreComplessoUno;
 	private Complex[] vettoreComplessoDue;
+	private Complex[] vettoreComplessoTre;
 	
 	private Signal filtroPassaBasso;
+	private Signal segnaleProva;
 
 	@Before
 	public void setUp() throws Exception {
@@ -33,6 +35,17 @@ public class SignalProcessorTest {
 			new Complex(2,0),
 			new Complex(1,0)
 		};
+		
+		this.vettoreComplessoTre = new Complex[]{
+			new Complex(1,0),
+			new Complex(0,0),
+			new Complex(2,0),
+			new Complex(0,0),
+			new Complex(1,0),
+			new Complex(0,0)
+		};
+		
+		this.segnaleProva = new Signal(vettoreComplessoTre);
 	}
 
 	
@@ -102,9 +115,17 @@ public class SignalProcessorTest {
 		assertEquals(0, filter.getValues()[simmetria+2].getReale(), 0);
 		
 	}
-	
 	@Test
 	public void filtroInterpolatore(){
+		int fattore = 2;
+		Signal interpolato = SignalProcessor.interpolazione(this.segnaleProva, fattore);
+		assertEquals(this.segnaleProva.getValues().length, interpolato.getValues().length);
 		
+		assertEquals(this.segnaleProva.getValues()[0], interpolato.values[0]);
+		assertNotEquals(0, this.segnaleProva.getValues()[1]);
+		assertEquals(this.segnaleProva.getValues()[2], interpolato.values[2]);
+        assertNotEquals(0, this.segnaleProva.getValues()[3]);
+		assertEquals(this.segnaleProva.getValues()[4], interpolato.values[4]);
+		assertNotEquals(0, this.segnaleProva.getValues()[5]);
 	}
 }

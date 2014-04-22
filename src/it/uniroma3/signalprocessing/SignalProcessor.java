@@ -182,7 +182,7 @@ public class SignalProcessor {
 		
 		Signal si = SignalProcessor.convoluzione(segnaleIn, lpf);
 		
-		for(int i = 0; i < si.getLength() - n; i++){
+		for(int i = n; i < si.getLength() - n; i++){
 			val[j] = si.getValues()[i];
 			j++;
 		}
