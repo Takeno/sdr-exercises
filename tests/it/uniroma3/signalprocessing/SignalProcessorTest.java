@@ -121,11 +121,14 @@ public class SignalProcessorTest {
 		Signal interpolato = SignalProcessor.interpolazione(this.segnaleProva, fattore);
 		assertEquals(this.segnaleProva.getValues().length, interpolato.getValues().length);
 		
+		
+		Complex zero = new Complex();
+		
 		assertEquals(this.segnaleProva.getValues()[0], interpolato.values[0]);
-		assertNotEquals(0, this.segnaleProva.getValues()[1]);
+		assertFalse(interpolato.getValues()[1].equals(zero));
 		assertEquals(this.segnaleProva.getValues()[2], interpolato.values[2]);
-        assertNotEquals(0, this.segnaleProva.getValues()[3]);
+		assertFalse(interpolato.getValues()[3].equals(zero));
 		assertEquals(this.segnaleProva.getValues()[4], interpolato.values[4]);
-		assertNotEquals(0, this.segnaleProva.getValues()[5]);
+		assertFalse(interpolato.getValues()[5].equals(zero));
 	}
 }
