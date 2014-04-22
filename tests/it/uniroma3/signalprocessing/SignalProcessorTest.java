@@ -121,6 +121,7 @@ public class SignalProcessorTest {
 		Signal interpolato = SignalProcessor.interpolazione(this.segnaleProva, fattore);
 		assertEquals(this.segnaleProva.getValues().length, interpolato.getValues().length);
 		
+		
 		assertEquals(this.segnaleProva.getValues()[0], interpolato.values[0]);
 		assertEquals(1.6976, interpolato.values[1].getReale(), 0.0001);
 		assertEquals(this.segnaleProva.getValues()[2], interpolato.values[2]);
