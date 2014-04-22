@@ -1,6 +1,7 @@
 package it.uniroma3.signalprocessing;
 
 import it.uniroma3.domain.*;
+import it.uniroma3.utility.DiscreteInterpolator;
 
 public class SignalProcessor {
 	public static double[] convoluzione(double[] v1, double[] v2) {
@@ -60,6 +61,31 @@ public class SignalProcessor {
 		double sincArgument = Math.PI * 2D * band * n;
 		return Math.sin(sincArgument) / sincArgument;
 	}
+
+
+	/**
+	 * Crea un nuovo segnale rappresentante il filtro passa-basso
+	 * con numero di campioni dati in input
+	 * e lo interpola con un interpolatore
+	 * 
+	 * @param double band
+	 * @param int numCampioni
+	 * @param DiscreteInterpolator<Double> interpolator
+	 * @return Segnale discreto
+	 */
+	public static Signal lowPassFilter(double band, int numCampioni, DiscreteInterpolator<Double> interpolator) {
+		Complex[] values = new Complex[numCampioni];
+		int simmetria = (numCampioni) / 2;
+		
+		for(int n = 0; n <= simmetria; n++){
+			double realval = 2 * band * SignalProcessor.sinc(n, band);
+			realval = interpolator.calc(realval, n);
+			values[n + simmetria] = new Complex(realval);
+			values[-n + simmetria] = new Complex(realval);
+		}
+		
+		return new Signal(values);
+	}
 	
 	/**
 	 * Crea un nuovo segnale rappresentante il filtro passa-basso
@@ -70,16 +96,12 @@ public class SignalProcessor {
 	 * @return Segnale discreto
 	 */
 	public static Signal lowPassFilter(double band, int numCampioni) {
-		Complex[] values = new Complex[numCampioni];
-		int simmetria = (numCampioni) / 2;
-		
-		for(int n = 0; n <= simmetria; n++){
-			double realval = 2 * band * SignalProcessor.sinc(n, band);
-			values[n + simmetria] = new Complex(realval);
-			values[-n + simmetria] = new Complex(realval);
-		}
-		
-		return new Signal(values);
+		return SignalProcessor.lowPassFilter(band, numCampioni,
+				new DiscreteInterpolator<Double>() {
+					public Double calc(Double oldValue, int index) {
+						return oldValue;
+					}
+				});
 	}
 
 	/**
@@ -97,46 +119,30 @@ public class SignalProcessor {
 	}
 	
 	/**
-	 * Crea un nuovo segnale rappresentante il filtro passa-basso dipendente da F1
+	 * Crea un nuovo segnale rappresentante il filtro passa-basso
+	 * con numero di campioni calcolati e interpolato secondo un DiscreteInterpolator
+	 * 
 	 * @param band
-	 * @param F1
+	 * @param DiscreteInterpolator<Double> interpolator
 	 * @return Segnale discreto
 	 */
-	
-	public static Signal lowPassFilterInterpolato(double band, int F1){
+	public static Signal lowPassFilter(double band, DiscreteInterpolator<Double> interpolator) {
 		double ampiezzaConsiderata = 5D / (2D * band);
 		int numCampioni = ((int)ampiezzaConsiderata)*2 + 1;
-		Signal lpf = SignalProcessor.lowPassFilter(band, numCampioni);
 		
-		for(Complex num: lpf.getValues())
-			num.setReale(num.getReale()*F1);
-		
-		return lpf;
-		
+		return SignalProcessor.lowPassFilter(band, numCampioni, interpolator);
 	}
 	
-	
-	public static Signal bandPassFilter (double band, double portante) {
+	public static Signal bandPassFilter (double band, final double portante) {
 		double ampiezzaConsiderata = 5D / (2D * band);
 		int numCampioni = ((int)ampiezzaConsiderata)*2 +1;
 		
-		Complex[] values = new Complex[numCampioni];
-		int simmetria = numCampioni / 2;
-		double realval;
-		
-		for(int n = 0; n <= simmetria; n++){
-			realval = 2 * band * SignalProcessor.sinc(n, band);
-			realval *= 2 * Math.cos(2 * Math.PI * portante * n);
-			values[n + simmetria] = new Complex(realval);
-			values[-n + simmetria] = new Complex(realval);
-		}
-		
-		// alternativamente si può usare il metodo lowPassFilter
-		// e moltiplicare tutti i suoi valori per il coseno
-		// non ci sarebbe la ripetizione di codice ma sarebbe più lento
-		// in quanto dovrebbe ciclare due volte lo stesso array
-		
-		return new Signal(values);
+		return SignalProcessor.lowPassFilter(band, numCampioni,
+				new DiscreteInterpolator<Double>() {
+					public Double calc(Double oldValue, int index) {
+						return oldValue * 2 * Math.cos(2 * Math.PI * portante * index);
+					}
+				});
 	}
 
 	/**
@@ -162,13 +168,19 @@ public class SignalProcessor {
 	 * @param F1
 	 * @return segnale interpolato
 	 */
-	public static Signal interpolazione(Signal segnaleIn, int F1){
+	public static Signal interpolazione(Signal segnaleIn, final int F1){
 		double band = 1D/ (2D * F1);
-		Signal lpf = lowPassFilter(band, F1), si;
+		
+		Signal lpf = SignalProcessor.lowPassFilter(band, new DiscreteInterpolator<Double>() {
+			public Double calc(Double oldValue, int index) {
+				return oldValue * F1;
+			}
+		});
+		
 		int n = (lpf.getLength() -1)/2, j = 0;
 		Complex[] val = new Complex[segnaleIn.getLength()];
 		
-		si = SignalProcessor.convoluzione(segnaleIn, lpf);
+		Signal si = SignalProcessor.convoluzione(segnaleIn, lpf);
 		
 		for(int i = 0; i < si.getLength() - n; i++){
 			val[j] = si.getValues()[i];
