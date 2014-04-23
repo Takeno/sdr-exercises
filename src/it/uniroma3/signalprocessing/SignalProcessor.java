@@ -290,7 +290,13 @@ public class SignalProcessor {
 	 */
 	
 	public static Signal cambioTasso (int T1, int T2, Signal signalIn){
-		//return placeholder
-		return new Signal(new Complex[5]);
+		int[] fattori = SignalProcessor.getParameters(T1, T2);
+		Signal newSignal;
+		
+		newSignal = SignalProcessor.espansione(signalIn, fattori[0]);
+		newSignal = SignalProcessor.interpolazione(newSignal, fattori[0]);
+		newSignal = SignalProcessor.decimatore(newSignal, fattori[1]);
+		
+		return newSignal;
 	}
 }
