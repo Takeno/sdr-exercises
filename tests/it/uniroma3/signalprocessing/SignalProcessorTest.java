@@ -183,7 +183,22 @@ public class SignalProcessorTest {
 	}
 	
 	@Test
-	public void filtroInterpolatore(){
+	public void interpolatoreFattoreUno(){
+		int fattore = 1;
+		Signal interpolato = SignalProcessor.interpolazione(this.segnaleTre, fattore);
+		assertEquals(this.segnaleTre.getValues().length, interpolato.getValues().length);
+		
+		assertEquals(this.segnaleTre.getValues()[0], interpolato.values[0]);
+		assertEquals(this.segnaleTre.getValues()[1], interpolato.values[1]);
+		assertEquals(this.segnaleTre.getValues()[2], interpolato.values[2]);
+		assertEquals(this.segnaleTre.getValues()[3], interpolato.values[3]);
+		assertEquals(this.segnaleTre.getValues()[4], interpolato.values[4]);
+		assertEquals(this.segnaleTre.getValues()[5], interpolato.values[5]);
+		
+	}
+	
+	@Test
+	public void interpolatoreFattoreDue(){
 		int fattore = 2;
 		Signal interpolato = SignalProcessor.interpolazione(this.segnaleTre, fattore);
 		assertEquals(this.segnaleTre.getValues().length, interpolato.getValues().length);
