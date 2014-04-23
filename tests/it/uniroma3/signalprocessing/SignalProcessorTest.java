@@ -17,6 +17,8 @@ public class SignalProcessorTest {
 	
 	private Signal segnaleUno;
 	
+	private Signal segnaleDue;
+	
 	private Signal filtroPassaBasso;
 	private Signal segnaleProva;
 
@@ -49,6 +51,7 @@ public class SignalProcessorTest {
 		};
 		
 		this.segnaleProva = new Signal(vettoreComplessoTre);
+		this.segnaleDue = new Signal(this.vettoreComplessoDue);
 	}
 
 	
@@ -116,7 +119,29 @@ public class SignalProcessorTest {
 		assertEquals(4*band, filter.getValues()[simmetria].getReale(), 0);
 		assertEquals(0.6366, filter.getValues()[simmetria+1].getReale(), 0.0001);
 		assertEquals(0, filter.getValues()[simmetria+2].getReale(), 0);
+	}
+	
+	
+	@Test
+	public void decimatoreFattoreDue() {
+		int fattore = 2;
+		Signal decimato = SignalProcessor.decimatore(this.segnaleDue, fattore);
+		assertEquals(this.segnaleDue.getValues().length / fattore, decimato.getValues().length);
 		
+		assertEquals(this.segnaleDue.getValues()[0], decimato.values[0]);
+		assertEquals(this.segnaleDue.getValues()[2], decimato.values[1]);
+	}
+	
+	@Test
+	public void decimatoreFattoreUno() {
+		int fattore = 1;
+		Signal decimato = SignalProcessor.decimatore(this.segnaleDue, fattore);
+		assertEquals(this.segnaleDue.getValues().length, decimato.getValues().length);
+		
+		assertEquals(this.segnaleDue.getValues()[0], decimato.values[0]);
+		assertEquals(this.segnaleDue.getValues()[1], decimato.values[1]);
+		assertEquals(this.segnaleDue.getValues()[2], decimato.values[2]);
+		assertEquals(this.segnaleDue.getValues()[3], decimato.values[3]);
 	}
 	
 	@Test
