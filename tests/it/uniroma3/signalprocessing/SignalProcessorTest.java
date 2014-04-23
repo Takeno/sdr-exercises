@@ -14,6 +14,8 @@ public class SignalProcessorTest {
 	private Complex[] vettoreComplessoUno;
 	private Complex[] vettoreComplessoDue;
 	
+	private Signal segnaleUno;
+	
 	private Signal filtroPassaBasso;
 
 	@Before
@@ -33,6 +35,8 @@ public class SignalProcessorTest {
 			new Complex(2,0),
 			new Complex(1,0)
 		};
+		
+		this.segnaleUno = new Signal(this.vettoreComplessoUno);
 	}
 
 	
@@ -109,5 +113,33 @@ public class SignalProcessorTest {
 		int fArray[] = SignalProcessor.getParameters(tArray[0], tArray[1]);
 		assertEquals(3, fArray[0]);
 		assertEquals(4, fArray[1]);
+	}	
+	@Test
+	public void espansoreFattoreDue() {
+		int fattore = 2;
+		Signal espanso = SignalProcessor.espansione(this.segnaleUno, fattore);
+		assertEquals(this.segnaleUno.getValues().length * fattore, espanso.getValues().length);
+		
+		Complex zero = new Complex();
+		
+		assertEquals(this.segnaleUno.getValues()[0], espanso.values[0]);
+		assertEquals(zero, espanso.getValues()[1]);
+		
+		assertEquals(this.segnaleUno.getValues()[1], espanso.values[2]);
+		assertEquals(zero, espanso.getValues()[3]);
+		
+		assertEquals(this.segnaleUno.getValues()[2], espanso.values[4]);
+		assertEquals(zero, espanso.getValues()[5]);
+	}
+	
+	@Test
+	public void espansoreFattoreUno() {
+		int fattore = 1;
+		Signal espanso = SignalProcessor.espansione(this.segnaleUno, fattore);
+		assertEquals(this.segnaleUno.getValues().length, espanso.getValues().length);
+		
+		assertEquals(this.segnaleUno.getValues()[0], espanso.values[0]);
+		assertEquals(this.segnaleUno.getValues()[1], espanso.values[1]);
+		assertEquals(this.segnaleUno.getValues()[2], espanso.values[2]);
 	}
 }
