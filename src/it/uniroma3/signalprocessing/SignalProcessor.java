@@ -74,6 +74,7 @@ public class SignalProcessor {
 	 * @param DiscreteInterpolator<Double> interpolator
 	 * @return Segnale discreto
 	 */
+	
 	public static Signal lowPassFilter(double band, int numCampioni, DiscreteInterpolator<Double> interpolator) {
 		Complex[] values = new Complex[numCampioni];
 		int simmetria = (numCampioni) / 2;
@@ -96,6 +97,7 @@ public class SignalProcessor {
 	 * @param numCampioni
 	 * @return Segnale discreto
 	 */
+	
 	public static Signal lowPassFilter(double band, int numCampioni) {
 		return SignalProcessor.lowPassFilter(band, numCampioni,
 				new DiscreteInterpolator<Double>() {
@@ -112,6 +114,7 @@ public class SignalProcessor {
 	 * @param band
 	 * @return Segnale discreto
 	 */
+	
 	public static Signal lowPassFilter(double band) {
 		double ampiezzaConsiderata = 5D / (2D * band);
 		int numCampioni = ((int)ampiezzaConsiderata)*2 + 1;
@@ -127,6 +130,7 @@ public class SignalProcessor {
 	 * @param DiscreteInterpolator<Double> interpolator
 	 * @return Segnale discreto
 	 */
+	
 	public static Signal lowPassFilter(double band, DiscreteInterpolator<Double> interpolator) {
 		double ampiezzaConsiderata = 5D / (2D * band);
 		int numCampioni = ((int)ampiezzaConsiderata)*2 + 1;
@@ -155,6 +159,7 @@ public class SignalProcessor {
 	 * @param rispImpulsivaFiltro
 	 * @return
 	 */
+	
 	public static Signal convoluzione(Signal segnaleIn, Signal rispImpulsivaFiltro){
 		
 		Complex[] values = convoluzione(segnaleIn.getValues(), rispImpulsivaFiltro.getValues());
@@ -169,6 +174,7 @@ public class SignalProcessor {
 	 * @param T2
 	 * @return array contenente F1 ed F2
 	 */
+	
 	public static int[] getParameters(int t1, int t2){
 		int gcd = Utils.gcd(t1, t2);
 		int[] fArray = {t1/gcd, t2/gcd};
@@ -208,13 +214,17 @@ public class SignalProcessor {
 
 		return new Signal(newValues);
 	}
-	/*
+	
+	/**
 	 * Filtro interpolatore eseguito su una sequenza espansa, in base al parametro F1
 	 * @param segnaleIn
 	 * @param F1
 	 * @return segnale interpolato
 	 */
+	
 	public static Signal interpolazione(Signal segnaleIn, final int F1){
+		if(F1 == 1) return segnaleIn;
+		
 		double band = 1D/ (2D * F1);
 		
 		Signal lpf = SignalProcessor.lowPassFilter(band, new DiscreteInterpolator<Double>() {
@@ -270,5 +280,17 @@ public class SignalProcessor {
 			newValues[j++] = values[i]; 
 
 		return new Signal(newValues);
+	}
+	
+	/** Operazione per il cambio di tasso di campionamento
+	 *  @param T1
+	 *  @param T2
+	 *  @param signaleIn
+	 *  @return segnale campionato con tasso T2
+	 */
+	
+	public static Signal cambioTasso (int T1, int T2, Signal signalIn){
+		//return placeholder
+		return new Signal(new Complex[5]);
 	}
 }

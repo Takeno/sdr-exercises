@@ -19,8 +19,10 @@ public class SignalProcessorTest {
 	
 	private Signal segnaleDue;
 	
+
+	private Signal segnaleTre;
+	
 	private Signal filtroPassaBasso;
-	private Signal segnaleProva;
 
 	@Before
 	public void setUp() throws Exception {
@@ -50,7 +52,7 @@ public class SignalProcessorTest {
 			new Complex(0,0)
 		};
 		
-		this.segnaleProva = new Signal(vettoreComplessoTre);
+		this.segnaleTre = new Signal(vettoreComplessoTre);
 		this.segnaleDue = new Signal(this.vettoreComplessoDue);
 	}
 
@@ -183,15 +185,21 @@ public class SignalProcessorTest {
 	@Test
 	public void filtroInterpolatore(){
 		int fattore = 2;
-		Signal interpolato = SignalProcessor.interpolazione(this.segnaleProva, fattore);
-		assertEquals(this.segnaleProva.getValues().length, interpolato.getValues().length);
+		Signal interpolato = SignalProcessor.interpolazione(this.segnaleTre, fattore);
+		assertEquals(this.segnaleTre.getValues().length, interpolato.getValues().length);
 		
 		
-		assertEquals(this.segnaleProva.getValues()[0], interpolato.values[0]);
+		assertEquals(this.segnaleTre.getValues()[0], interpolato.values[0]);
 		assertEquals(1.6976, interpolato.values[1].getReale(), 0.0001);
-		assertEquals(this.segnaleProva.getValues()[2], interpolato.values[2]);
+		assertEquals(this.segnaleTre.getValues()[2], interpolato.values[2]);
         assertEquals(1.6976, interpolato.values[3].getReale(), 0.0001);
-		assertEquals(this.segnaleProva.getValues()[4], interpolato.values[4]);
+		assertEquals(this.segnaleTre.getValues()[4], interpolato.values[4]);
         assertEquals(0.3395, interpolato.values[5].getReale(), 0.0001);
+	}
+	
+	@Test
+	public void cambioTasso(){
+		int T1 = 10, T2 = 15;
+		
 	}
 }
