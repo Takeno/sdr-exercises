@@ -14,13 +14,12 @@ public class SignalProcessorTest {
 	private Complex[] vettoreComplessoUno;
 	private Complex[] vettoreComplessoDue;
 	private Complex[] vettoreComplessoTre;
+	private Complex[] vettoreComplessoQuattro;
 	
-	private Signal segnaleUno;
-	
+	private Signal segnaleUno;	
 	private Signal segnaleDue;
-	
-
 	private Signal segnaleTre;
+	private Signal segnaleQuattro;
 	
 	private Signal filtroPassaBasso;
 
@@ -42,18 +41,24 @@ public class SignalProcessorTest {
 			new Complex(1,0)
 		};
 		
-		this.segnaleUno = new Signal(this.vettoreComplessoUno);
 		this.vettoreComplessoTre = new Complex[]{
-			new Complex(1,0),
-			new Complex(0,0),
-			new Complex(2,0),
-			new Complex(0,0),
-			new Complex(1,0),
-			new Complex(0,0)
+				new Complex(1,0),
+				new Complex(0,0),
+				new Complex(2,0),
+				new Complex(0,0),
+				new Complex(1,0),
+				new Complex(0,0)
+			};
+		
+		this.vettoreComplessoQuattro = new Complex[]{
+				new Complex(3,0),
+				new Complex(0,0)
 		};
 		
-		this.segnaleTre = new Signal(vettoreComplessoTre);
-		this.segnaleDue = new Signal(this.vettoreComplessoDue);
+		this.segnaleUno     = new Signal(this.vettoreComplessoUno);	
+		this.segnaleDue     = new Signal(this.vettoreComplessoDue);	
+		this.segnaleTre     = new Signal(this.vettoreComplessoTre);
+		this.segnaleQuattro = new Signal(this.vettoreComplessoQuattro);
 	}
 
 	
@@ -186,6 +191,7 @@ public class SignalProcessorTest {
 	public void interpolatoreFattoreUno(){
 		int fattore = 1;
 		Signal interpolato = SignalProcessor.interpolazione(this.segnaleTre, fattore);
+		
 		assertEquals(this.segnaleTre.getValues().length, interpolato.getValues().length);
 		
 		assertEquals(this.segnaleTre.getValues()[0], interpolato.values[0]);
@@ -201,6 +207,7 @@ public class SignalProcessorTest {
 	public void interpolatoreFattoreDue(){
 		int fattore = 2;
 		Signal interpolato = SignalProcessor.interpolazione(this.segnaleTre, fattore);
+		
 		assertEquals(this.segnaleTre.getValues().length, interpolato.getValues().length);
 		
 		
@@ -213,8 +220,25 @@ public class SignalProcessorTest {
 	}
 	
 	@Test
-	public void cambioTasso(){
-		int T1 = 10, T2 = 15;
+	public void cambioTassoFattoriUno(){
+		int T1 = 1, T2 = 1;
+		Signal segnaleNuovoTasso = SignalProcessor.cambioTasso(T1, T2, this.segnaleUno);
 		
+		assertEquals(this.segnaleUno.getValues().length, segnaleNuovoTasso.getValues().length);
+		
+		assertEquals(this.segnaleUno.getValues()[0], segnaleNuovoTasso.getValues()[0]);
+		assertEquals(this.segnaleUno.getValues()[1], segnaleNuovoTasso.getValues()[1]);
+		assertEquals(this.segnaleUno.getValues()[2], segnaleNuovoTasso.getValues()[2]);
+	}
+	
+	@Test
+	public void cambioTassoFattoriNonUno(){
+		int T1 = 10, T2 = 15;
+		Signal segnaleNuovoTasso = SignalProcessor.cambioTasso(T1, T2, this.segnaleUno);
+		
+		assertEquals(this.segnaleQuattro.getValues().length, segnaleNuovoTasso.getValues().length);
+		
+		assertEquals(this.segnaleQuattro.getValues()[0], segnaleNuovoTasso.getValues()[0]);
+		assertEquals(1.2732, segnaleNuovoTasso.getValues()[1].getReale(), 0.0001);		
 	}
 }

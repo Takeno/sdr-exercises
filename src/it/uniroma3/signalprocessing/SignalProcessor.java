@@ -232,6 +232,7 @@ public class SignalProcessor {
 				return oldValue * F1;
 			}
 		});
+				
 		
 		int n = (lpf.getLength() -1)/2, j = 0;
 		Complex[] val = new Complex[segnaleIn.getLength()];
