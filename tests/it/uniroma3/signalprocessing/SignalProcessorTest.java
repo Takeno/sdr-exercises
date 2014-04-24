@@ -222,7 +222,7 @@ public class SignalProcessorTest {
 	@Test
 	public void cambioTassoFattoriUno(){
 		int T1 = 1, T2 = 1;
-		Signal segnaleNuovoTasso = SignalProcessor.cambioTasso(T1, T2, this.segnaleUno);
+		Signal segnaleNuovoTasso = SignalProcessor.cambioTassoCampionamento(T1, T2, this.segnaleUno);
 		
 		assertEquals(this.segnaleUno.getValues().length, segnaleNuovoTasso.getValues().length);
 		
@@ -234,7 +234,7 @@ public class SignalProcessorTest {
 	@Test
 	public void cambioTassoFattoriNonUno(){
 		int T1 = 10, T2 = 15;
-		Signal segnaleNuovoTasso = SignalProcessor.cambioTasso(T1, T2, this.segnaleUno);
+		Signal segnaleNuovoTasso = SignalProcessor.cambioTassoCampionamento(T1, T2, this.segnaleUno);
 		
 		assertEquals(this.segnaleQuattro.getValues().length, segnaleNuovoTasso.getValues().length);
 		

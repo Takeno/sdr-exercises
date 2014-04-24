@@ -290,7 +290,7 @@ public class SignalProcessor {
 	 *  @return segnale campionato con tasso T2
 	 */
 	
-	public static Signal cambioTasso (int T1, int T2, Signal signalIn){
+	public static Signal cambioTassoCampionamento (int T1, int T2, Signal signalIn){
 		int[] fattori = SignalProcessor.getParameters(T1, T2);
 		Signal newSignal;
 		
