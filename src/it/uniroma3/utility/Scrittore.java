@@ -25,7 +25,7 @@ public class Scrittore {
 		}
 	}
 	
-	public void stampa (Double[] campioni){
+	public void scriviCampioni (Double[] campioni){
 		try {
 			file.createNewFile();
 		} catch (IOException e) {

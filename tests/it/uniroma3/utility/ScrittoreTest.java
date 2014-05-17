@@ -30,8 +30,8 @@ public class ScrittoreTest {
 	}
 	
 	@Test
-	public void testStampa() {
-		scrittore.stampa(this.campioni);
+	public void testScriviCampioni() {
+		scrittore.scriviCampioni(this.campioni);
 		scrittore.close();
 		
 		try{
