@@ -300,4 +300,18 @@ public class SignalProcessor {
 		
 		return newSignal;
 	}
+
+    public static double[] demodulatore(Signal signalIn) {
+        Complex[] values = signalIn.getValues();
+        double[] frequences = new double[values.length];
+
+        for(int i = 0; i < values.length; i++) {
+            int shifted = (i+1) % values.length;
+            // rapporto incrementale
+            Complex tmp = values[i].prodotto(values[shifted].coniugato());  
+            frequences[i] = Math.atan(tmp.getImmaginaria() / tmp.getReale());
+        }
+
+        return frequences;
+    }
 }
