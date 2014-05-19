@@ -317,7 +317,7 @@ public class SignalProcessor {
 		
 		newSignal = SignalProcessor.selettoreCanale(signalIn, deltaf);
 		newSignal = SignalProcessor.lowPassFilter(band-deltaf);
-		fattori = SignalProcessor.getParameters(T1, T2);
+		fattori   = SignalProcessor.getParameters(T1, T2);
 		newSignal = SignalProcessor.cambioTassoCampionamento(T1, T2, signalIn);
 		
 		return newSignal;
