@@ -3,6 +3,7 @@ package it.uniroma3.signalprocessing;
 import it.uniroma3.domain.*;
 import it.uniroma3.utility.Utils;
 import it.uniroma3.utility.DiscreteInterpolator;
+import java.io.FileNotFoundException;
 
 public class SignalProcessor {
 	public static double[] convoluzione(double[] v1, double[] v2) {
@@ -299,5 +300,31 @@ public class SignalProcessor {
 		newSignal = SignalProcessor.decimatore(newSignal, fattori[1]);
 		
 		return newSignal;
+	}
+
+
+	public static Signal leggiCampioni(String pathIn) {
+		/* default values */
+		int sampleRate = 1000000;
+		int seconds = 2;
+		return SignalProcessor.leggiCampioni(pathIn, sampleRate, seconds);
+	}
+
+	public static Signal leggiCampioni(String pathIn, int sampleRate, int seconds) {
+		SampleReader reader;
+
+		try {
+			reader = new SampleReader(pathIn);
+		} catch(FileNotFoundException e) {
+			return null;
+		}
+
+		int numberOfSamples = sampleRate * seconds;
+		Complex[] values = new Complex[numberOfSamples];
+
+		for(int i = 0; i < numberOfSamples && (values[i] = reader.readSample()) != null; i++);
+
+
+		return new Signal(values, sampleRate);
 	}
 }
