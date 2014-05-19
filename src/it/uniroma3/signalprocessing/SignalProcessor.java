@@ -221,7 +221,6 @@ public class SignalProcessor {
 	 * @param F1
 	 * @return segnale interpolato
 	 */
-	
 	public static Signal interpolazione(Signal segnaleIn, final int F1){
 		if(F1 == 1) return segnaleIn;
 		
@@ -289,7 +288,6 @@ public class SignalProcessor {
 	 *  @param signaleIn
 	 *  @return segnale campionato con tasso T2
 	 */
-	
 	public static Signal cambioTassoCampionamento (int T1, int T2, Signal signalIn){
 		int[] fattori = SignalProcessor.getParameters(T1, T2);
 		Signal newSignal;
@@ -297,6 +295,30 @@ public class SignalProcessor {
 		newSignal = SignalProcessor.espansione(signalIn, fattori[0]);
 		newSignal = SignalProcessor.interpolazione(newSignal, fattori[0]);
 		newSignal = SignalProcessor.decimatore(newSignal, fattori[1]);
+		
+		return newSignal;
+	}
+
+	
+	/** DDC
+	 *  @param segnaleIn
+	 *  @param deltaf
+	 *  @return segnale sottoposto a DDC
+	 */
+	public static Signal ddc(Signal signalIn, Double band, Double deltaf, int T2){
+		Signal newSignal;
+		int f, T1;
+		int[] fattori;
+		
+		//frequenza di campionamento originale
+		f = signalIn.getSampleRate();
+		//tasso di campionamento originale
+		T1 = 1/f;
+		
+		newSignal = SignalProcessor.selettoreCanale(signalIn, deltaf);
+		newSignal = SignalProcessor.lowPassFilter(band-deltaf);
+		fattori = SignalProcessor.getParameters(T1, T2);
+		newSignal = SignalProcessor.cambioTassoCampionamento(T1, T2, signalIn);
 		
 		return newSignal;
 	}
