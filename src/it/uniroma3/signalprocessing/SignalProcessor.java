@@ -308,7 +308,6 @@ public class SignalProcessor {
 	public static Signal ddc(Signal signalIn, Double band, Double deltaf, int T2){
 		Signal newSignal;
 		int f, T1;
-		int[] fattori;
 		
 		//frequenza di campionamento originale
 		f = signalIn.getSampleRate();
@@ -317,7 +316,6 @@ public class SignalProcessor {
 		
 		newSignal = SignalProcessor.selettoreCanale(signalIn, deltaf);
 		newSignal = SignalProcessor.lowPassFilter(band-deltaf);
-		fattori   = SignalProcessor.getParameters(T1, T2);
 		newSignal = SignalProcessor.cambioTassoCampionamento(T1, T2, signalIn);
 		
 		return newSignal;
