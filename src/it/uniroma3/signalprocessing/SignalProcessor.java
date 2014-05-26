@@ -327,4 +327,18 @@ public class SignalProcessor {
 
 		return new Signal(values, sampleRate);
 	}
+
+    public static Signal selettoreCanale(Signal signalIn, double deltaF) {
+        Complex[] values = signalIn.getValues();
+        Complex[] newValues = new Complex[values.length];
+
+        Complex esponente;
+
+        for(int i = 0; i < values.length; i++) {
+            esponente = new Complex(0, 2 * Math.PI * deltaF * i);
+            newValues[i] = values[i].prodotto(esponente.exp());
+        }
+
+        return new Signal(newValues, signalIn.getSampleRate());
+    }
 }
