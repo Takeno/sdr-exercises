@@ -18,5 +18,5 @@ public class UtilsTest {
 	public void gcdWithNegative() {
 		Utils.gcd(-1, -5);
 	}
-	
+		
 }
